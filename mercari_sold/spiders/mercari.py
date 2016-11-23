@@ -7,7 +7,7 @@ class MercariSpider(scrapy.Spider):
     name = "mercari"
     allowed_domains = ["www.mercari.com", 'item.mercari.com']
     domain = "https://www.mercari.com"
-    start_urls = [
+    start_urls = (
         # レディース
         'https://www.mercari.com/jp/category/1/',
         # メンズ
@@ -32,7 +32,7 @@ class MercariSpider(scrapy.Spider):
         'https://www.mercari.com/jp/category/1318/',
         # その他
         'https://www.mercari.com/jp/category/10/',
-    ]
+    )
 
     def parse_detail(self, response):
         item = response.meta['item']
@@ -41,7 +41,11 @@ class MercariSpider(scrapy.Spider):
         item['price'] = response.css("span.item-price::text").extract_first().__str__().strip("¥ ")
         item['shipping_fee'] = response.css("span.item-shipping-fee::text").extract_first()
         item['description'] = ''.join([x.strip() for x in response.css("div.item-description::text").extract()])
-        yield item
+
+        if not item['title']:
+            yield
+        else:
+            yield item
 
     def parse(self, response):
         items = []
