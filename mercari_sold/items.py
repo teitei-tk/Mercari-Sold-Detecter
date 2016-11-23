@@ -9,5 +9,9 @@ import scrapy
 
 
 class MercariSoldItem(scrapy.Item):
-    name = scrapy.Field()
+    title = scrapy.Field()
+    categories = scrapy.Field()
+    price = scrapy.Field()
+    shipping_fee = scrapy.Field()
+    description = scrapy.Field()
     url = scrapy.Field()
